@@ -1,0 +1,27 @@
+{
+  "name": "taller",
+  "version": "1.0.0",
+  "description": "Prueba",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remilia29/taller.git"
+  },
+  "keywords": [
+    "git",
+    "node",
+    "express"
+  ],
+  "author": "Remilia29",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remilia29/taller/issues"
+  },
+  "homepage": "https://github.com/remilia29/taller#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
