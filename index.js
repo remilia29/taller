@@ -1,16 +1,22 @@
 const express = require('express');
 const app = express();
+const{pokemon} = require ('./pokedex.json');
 
 app.get('/', (req,res,next) => {
-    res.send("bienvenido");
+    res.status(200);
+    res.send("bienvenido al poquedex");
 });
 
-app.get('/:nombre', (req,res,next)=>{
-   // var nombre = req.query.nombre;
-    //res.status
-    res.send("hola,"+(req.params.nombre) );
+app.get('/pokemon', (req,res,next)=>{
+   res.status(200)
+    res.send(pokemon);
 });
 
-app.listen(process.env.PORT||3000, ()=> {
-    console.log ("server is runnin...")
+app.get('/poquemon/:id',(req,res,next)=> {
+    res.status(200);
+    res.send (pokemon [req.params.id - 1]);
+});
+
+app.listen(process.env.PORT || 3000, () =>{
+    console.log("server is rinning...");
 });
