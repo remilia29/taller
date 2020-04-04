@@ -1,35 +1,29 @@
 const express = require('express');
-const pokemon = express.Router();    
-const pk = require ('../pokedex.json').pokemon;
+const pokeroute = express.Router();
 
-pokemon.post("/",(req, res,next) =>{
-    return res.status(200).send(req.body);
-    });
+const pokedb = require('../config/database');
+
+pokeroute.post('/',async (req,res,next)=>{
+    const getAllPokimones = await pokedb.query("SELECT * FROM pokemon;");
+    res.status(200).json(getAllPokimones);
+});
+pokeroute.get('/',async (req,res,next)=>{
+
+    const getAllPokimones = await pokedb.query("SELECT * FROM pokemon;");
     
-pokemon.get('/', (req,res,next)=>{
-      
-        return res.status(200).send(pk);
-    });
+    res.status(200).json(getAllPokimones);
+});
+
+pokeroute.get('/:id([0-9]{1,3})',async (req,res,next)=>{
+    var idpoke = req.params.id;
+    const obtenerPokeId = await pokedb.query("SELECT * FROM pokemon WHERE pok_id = ?;",[idpoke]);
+    (obtenerPokeId.length > 0) ? res.status(200).json(obtenerPokeId) : res.status(404).send("Pokemon no existe");
+});
+pokeroute.get('/:name([A-Za-z]+)',async (req,res,next)=>{
+    var pokename = req.params.name;
+    const obtenerPokeName = await pokedb.query("SELECT * FROM pokemon WHERE lower(pok_name) = ?;",[pokename.toLowerCase()]);
+    (obtenerPokeName.length > 0) ? res.status(200).json(obtenerPokeName) : res.status(404).send("Pokemon no encontrado") ;
+
     
-pokemon.get('/:id([0-9]{1,3})', (req,res,next)=> {
-        const id = req.params.id - 1;
-        if (id >= 0 && id <= 150) {
-       return  res.status(200).send(pk[req.params.id - 1]);
-        }
-       return res.status(404).send ("pokemon no encontrado");
-    });
-    
-  pokemon.get('/:name([A-Za-z]+)', (req,res,next)=>{
-    const name = req.params.name;
-    
-    const pkmn = pk.filter((p)=>{
-         return (p.name.toUpperCase()== name.toUpperCase()) && p ;
-        });
-    
-        if(pkmn.length > 0){
-            return res.status(200).send(pkmn);
-        }
-    
-        return res.status(404).send ("pokemon no encontrado");
-    });
-    
+});
+module.exports = pokeroute;

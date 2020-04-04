@@ -1,19 +1,22 @@
-const bodyParser =require('body-parser');
-const morgan = require('morgan');
 const express = require('express');
+const dotenv = require('dotenv');
+const bodyparser = require('body-parser');
+const morgan = require('morgan');
+const pokeroute = require('./routes/pokemon');
 const app = express();
-const pokemon = require('./routes/pokemon');
 
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended:true}));
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
 
-app.get("/", (req,res,next) => {
-    return res.status(200).send("bienvenido al pokdex");
+dotenv.config();
+
+app.get('/',(req,res,next)=>{
+    res.send("Beinvenido a la pokedex...");
 });
 
-app.use("/pokemon", pokemon);
+app.use("/pokemon",pokeroute);
 
-app.listen(process.env.PORT || 3000, () =>{
-    console.log("server is rinning...");
+app.listen(process.env.PORT || 3000,()=>{
+    console.log("App en el puerto 3000");
 });
