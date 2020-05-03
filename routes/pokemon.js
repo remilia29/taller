@@ -32,34 +32,7 @@ pokeroute.get('/',async (req,res,next)=>{
     //console.log(getAllPokimones);
     res.status(200).json({code: 1, message:getAllPokimones});
 });
-pokeroute.delete('/:id([0-9]{1,3})',async (req,res,next)=>{
-    const query = "DELETE FROM pokemon WHERE pok_id = ? ;";
-    const rows = await pokedb.query(query,[req.params.id]);
-    if(rows.affectedRows == 1){
-        res.status(200).json({code:200,message:"Pokemon borrado correctamente"});
-    }else{
-        res.status(404).json({code:404,message:"No se ha encontrado pokemon"});
-    }
-});
-pokeroute.put('/:id([0-9]{1,3})',async (req,res,next)=>{
-    const {pok_name,pok_height,pok_weight,pok_base_experience} = req.body;
-    const query = "UPDATE pokemon SET pok_name = ?, pok_height = ?, pok_weight = ?, pok_base_experience = ?  WHERE pok_id = ?;";
-    const rows = await pokedb.query(query,[pok_name,pok_height,pok_weight,pok_base_experience,req.params.id]);
-    if(rows.affectedRows == 1){
-        res.status(200).json({code:200,message:"Pokemon borrado correctamente"});
-    }else{
-        res.status(404).json({code:404,message:"No se ha encontrado pokemon"});
-    }
-});
-pokeroute.patch('/:id([0-9]{1,3})',async (req,res,next)=>{
-    const query = "UPDATE pokemon SET pok_name = ? WHERE pok_id = ?;";
-    const rows = await pokedb.query(query,[req.body.pok_name,req.params.id]);
-    if(rows.affectedRows == 1){
-        res.status(200).json({code:200,message:"Pokemon borrado correctamente"});
-    }else{
-        res.status(404).json({code:404,message:"No se ha encontrado pokemon"});
-    }
-});
+
 /*
 
 pokeroute.post('/',async (req,res,next)=>{
