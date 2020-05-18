@@ -5,9 +5,15 @@ const morgan = require('morgan');
 const pokeroute = require('./routes/pokemon');
 const userroute = require('./routes/user');
 const app = express();
+const auth = require('./middleware/auth');
+const notFound = require('./middleware/notFound');
+const index = require('./middleware/index');
+const cors = require('./middleware/corsconfig');
+
 
 //app.use(bodyparser.json());
 //app.use(bodyparser.urlencoded({extended:true}));
+app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));
@@ -23,16 +29,13 @@ app.get('/:nombre',(req,res,next)=>{
     res.send("Hola, "+req.params.nombre);
 });
 **/
-app.get('/',(req,res,next)=>{
-    res.send("Beinvenido a la pokedex...");
-});
+app.get('/',index);
 
-app.use("/pokemon",pokeroute);
 app.use("/user",userroute);
+app.use(auth);
+app.use("/pokemon",pokeroute);
 
-app.use((req,res,next)=>{
-    res.status(404).json({code:404,message:"No encontre nada :c"});
-});
+app.use(notFound);
 
 app.listen(process.env.PORT || 3000,()=>{
     console.log("App en el puerto 3000");
