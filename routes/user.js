@@ -3,7 +3,7 @@ const userroute = express.Router();
 const jwt = require('jsonwebtoken');
 const pokedb = require('../config/database');
 
-userroute.post('/',async (req,res,next)=>{
+userroute.post('/signin',async (req,res,next)=>{
     const {user_name,user_mail,user_password} = req.body;
     if(user_name && user_mail && user_password){
         let query = "INSERT INTO user VALUES (NULL,?,?,?)";
